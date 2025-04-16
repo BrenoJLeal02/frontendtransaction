@@ -1,58 +1,108 @@
-<<<<<<< HEAD
-# React + TypeScript + Vite
+# Instalation Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Avisos
 
-Currently, two official plugins are available:
+> [!IMPORTANT]  
+> Por favor, Não fazer commit direto na branch main.
+> Abaixo terá um padrão de commits semânticos para melhor identificação do que foi realizado.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Pré-requisitos
 
-## Expanding the ESLint configuration
+Antes de começar, certifique de ter o node.jS e o npm (Node Pack Manager) em seu Sistema Operacional. você pode instalar [Site Oficial](https://nodejs.org/).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Passos de Instalação: 
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. **Clone o repositorio:** https://github.com/BrenoJLeal02/frontendtransaction.git
+
+2. **Instalar as depêndencias:**
+
+```bash
+ npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Inicie o servidor de desenvolvimento**:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
-=======
-# frontendtransaction
->>>>>>> e58673414f9115d7295b24a4e62ff71c3a5c10ad
+
+este comando irá iniciar o servidor de desenvolvimento local usando o Vite. Agora você pode acessar seu aplicativo em `http://localhost:5173/`
+
+```bash
+  VITE v5.4.1  ready in 1215 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+```
+
+## Padrão de commits a serem seguidos
+
+Evitem fazer commits de muitas linhas, as vezes menos é mais. Também sigam esses padrões de descrição de commits para facilitar a leitura de todos em relação às mudanças feitas
+
+- **Feat:** Adição de uma nova funcionalidade.
+  - **Exemplo**
+    ```bash
+        git commit -m "Feat: Creating login page"
+    ```
+- **Fix:** Correção de lógica de alguma funcionalidade, testes e similares.
+  - **Exemplo:**
+    ```bash
+         git commit -m "Fix: Fixing login authorization"
+    ```
+- **Refactor:** Refatoração e/ou otmização do código, corrigir identação etc.
+  - **Exemplo:**
+    ```bash
+         git commit -m "Refactor: Refactor API archive"
+    ```
+- **Style:** Adição e modificação de estilização(APENAS ESTILIZAÇÃO).
+  - **Exemplo:**
+    ```bash
+         git commit -m "Style: Add Navbar color"
+         git commit -m "Style: Change Navabar Color"
+    ```
+- **Chore:** Commits do tipo chore indicam atualizações de tarefas de build, configurações de administrador, pacotes... como por exemplo adicionar um pacote no gitignore. (Não inclui alterações em código).
+
+  - **Exemplo:**
+
+    ```bash
+         git commit -m "Chore: Configure vercel.json File"
+
+    ```
+
+- **Docs:** Adição de documentação no projeto
+  - **Exemplo:**
+    ```bash
+         git commit -m "Docs: add documentation"
+    ```
+
+## Pull Requests
+
+Ao fazer um pull request, verifique se há conflitos. **Pull request com conflitos não serão aceitos.**
+
+Caso hajam conflitos, pesquisem sobre resolução de conflitos e pull request em projetos open source.
+
+## Branches
+
+- **main:** -> Branch Principal.
+## Criem suas próprias branches baseadas na main de preferência
+**Exemplo:**
+- **anaclara** -> Branch de desenvolvimento de Ana Clara.
+- **breno** -> Branch de desenvolvimento de Breno.
+- **gabriel** -> Branch de desenvolvimento de Gabriel.
+- **kenji** -> Branch de desenvolvimento de Kenji.
+- **hallan** -> Branch de desenvolvimento de Hallan.
+
+**Para acessar as e navegar entre as branches:**
+
+```bash
+git checkout nome_da_branch -> para trocar de branch.
+git checkout -b nome_da_branch  -> criação de uma nova branch.
+```
+
+## Scripts Disponíveis
+
+- **dev:** Inicia o servidor de desenvolvimento.
+- **build:** Gera uma versão de produção otimizada do seu aplicativo.
+- **lint:** Executa o ESLint para verificar e corrigir problemas de estilo de código.
+- **preview:** Inicia um servidor para visualizar a versão de produção antes de implantar.
