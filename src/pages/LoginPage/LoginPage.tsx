@@ -1,18 +1,8 @@
-import {
-  Box,
-  Container,
-  Select,
-  Text,
-  VStack,
-  Heading,
-  Button,
-  Flex,
-  TextProps,
-} from "@chakra-ui/react";
+import { Box, Container, Select, VStack, Heading, Button, Flex, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
-
-const Label = (props: TextProps) => <Text color="#72778a" mb={1} {...props} />;
-
+//Vá nos componentes CustomLabel e CustomInput, lá tem uma explicação do que foi feito.
 export function LoginPage() {
   return (
     <Flex minH="100vh" align="center" justify="center">
@@ -24,22 +14,22 @@ export function LoginPage() {
 
           <VStack spacing={4} align="stretch">
             <Box>
-              <Label>Email</Label>
+              <CustomLabel>Email</CustomLabel>
               <CustomInput type="email" placeholder="Digite seu email" />
             </Box>
 
             <Box>
-              <Label>Username</Label>
+              <CustomLabel>Username</CustomLabel>
               <CustomInput type="text" placeholder="Digite seu username" />
             </Box>
 
             <Box>
-              <Label>Password</Label>
+              <CustomLabel>Password</CustomLabel>
               <CustomInput type="password" placeholder="Digite sua senha" />
             </Box>
 
             <Box>
-              <Label>Role</Label>
+              <CustomLabel>Role</CustomLabel>
               <Select
                 color="#72778a"
                 border="none"
@@ -55,6 +45,13 @@ export function LoginPage() {
             <Button bg="#00875F" color="#fff" mt={4} _hover={{ bg: "#015f43" }}>
               Entrar
             </Button>
+
+            {/* A tag de <Link> do react-router-dom substitui a tag <a> que normalmente é utilizada para redirecionamento de página. */}
+            <Link to="/registro">
+              <Text color="teal.400" mt={4} textAlign="center" fontSize="sm" _hover={{ textDecoration: "underline" }}>
+                Não tem uma conta? Crie uma agora.
+              </Text>
+            </Link>
           </VStack>
         </Box>
       </Container>
