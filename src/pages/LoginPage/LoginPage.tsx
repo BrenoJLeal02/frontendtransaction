@@ -1,33 +1,53 @@
 import {
   Box,
   Container,
-  Select,
   VStack,
   Heading,
   Button,
   Flex,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { LoginFormData } from "../../types/InterfaceAuth";
+import { useState } from "react";
+import { login } from "../../service/Auth";
 //Vá nos componentes CustomLabel e CustomInput, lá tem uma explicação do que foi feito.
 export function LoginPage() {
-  
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },  
-  } = useForm<LoginFormData>({
-    defaultValues: {
-      role: "user",
-    },
-  });
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-    console.log("Login data:", data);
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    try {
+      setLoading(true);
+      const response = await login(data); 
+      localStorage.setItem("jwtToken", response.token);  
+      
+      toast({
+        title: "Login realizado com sucesso",
+        description: `Bem-vindo de volta, ${response.username}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate("/transacao");  
+    } catch (error: any) {
+      toast({
+        title: "Erro ao fazer login",
+        description: error.response?.data?.message || "Erro ao autenticar o usuário",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,12 +61,12 @@ export function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing={4} align="stretch">
               <Box>
-                <CustomLabel>Email</CustomLabel>
+                <CustomLabel>Email ou Username</CustomLabel>
                 <CustomInput
-                  type="email"
-                  placeholder="Digite seu email"
+                  type="text"
+                  placeholder="Digite seu email ou username"
                   {...register("email", {
-                    required: "Email é obrigatório",
+                    required: "Email ou Username é obrigatório",
                   })}
                 />
                 {errors.email && (
@@ -57,29 +77,11 @@ export function LoginPage() {
               </Box>
 
               <Box>
-                <CustomLabel>Username</CustomLabel>
-                <CustomInput
-                  type="text"
-                  placeholder="Digite seu username"
-                  {...register("username", {
-                    required: "Username é obrigatório",
-                  })}
-                />
-                {errors.username && (
-                  <Text color="red.400" fontSize="sm" mt={1}>
-                    {errors.username.message}
-                  </Text>
-                )}
-              </Box>
-
-              <Box>
                 <CustomLabel>Password</CustomLabel>
                 <CustomInput
                   type="password"
                   placeholder="Digite sua senha"
-                  {...register("password", {
-                    required: "Senha é obrigatória",
-                  })}
+                  {...register("password", { required: "Senha é obrigatória" })}
                 />
                 {errors.password && (
                   <Text color="red.400" fontSize="sm" mt={1}>
@@ -88,32 +90,9 @@ export function LoginPage() {
                 )}
               </Box>
 
-              <Box>
-                <CustomLabel>Role</CustomLabel>
-                <Select
-                  color="#72778a"
-                  border="none"
-                  bg="#121214"
-                  _focus={{
-                    borderColor: "#00875f",
-                    boxShadow: "0 0 0 1px #00875f",
-                  }}
-                  {...register("role", {
-                    required: "Selecione uma role",
-                  })}
-                >
-                  <option value="admin">Admin</option>
-                  <option value="user">User</option>
-                </Select>
-                {errors.role && (
-                  <Text color="red.400" fontSize="sm" mt={1}>
-                    {errors.role.message}
-                  </Text>
-                )}
-              </Box>
-
               <Button
                 type="submit"
+                isLoading={loading}
                 bg="#00875F"
                 color="#fff"
                 mt={4}
