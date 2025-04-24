@@ -1,5 +1,6 @@
 import { LoginPage } from "../pages/LoginPage/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage/RegisterPage";
+import { TransactionPage } from "../pages/TransactionPage/TransactionPage";
 // Esse componente serve como um intermediário para renderizar a página de login.
 // Imagine que sua aplicação possui uma navbar ou um footer, mas você só quer que eles apareçam em algumas páginas. 
 // Nesse caso, você pode importá-los aqui e posicioná-los acima e abaixo, por exemplo, da `TransactionPage`. 
@@ -21,12 +22,10 @@ export function Register(){
     )
 }
 
-// export function Transaction(){
-//     return(
-//         <>
-//             <Navbar/>
-//             <TransactionPage/>
-//             <Footer/>
-//         </>
-//     )
-// }
+export function Transaction(){
+    return(
+        <>
+            <TransactionPage/>
+        </>
+    )
+}

@@ -61,12 +61,12 @@ export function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing={4} align="stretch">
               <Box>
-                <CustomLabel>Email ou Username</CustomLabel>
+                <CustomLabel>Email</CustomLabel>
                 <CustomInput
                   type="text"
-                  placeholder="Digite seu email ou username"
+                  placeholder="Digite seu email"
                   {...register("email", {
-                    required: "Email ou Username é obrigatório",
+                    required: "Email é obrigatório",
                   })}
                 />
                 {errors.email && (
