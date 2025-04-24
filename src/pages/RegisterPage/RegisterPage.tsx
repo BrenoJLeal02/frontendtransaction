@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { RegisterFormData } from "../../types/InterfaceAuth";
+import { RegisterFormData } from "../../types/AuthInterface";
 import { register } from "../../service/Auth";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";

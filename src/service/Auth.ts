@@ -1,4 +1,4 @@
-import { LoginFormData, RegisterFormData } from "../types/InterfaceAuth"
+import { LoginFormData, RegisterFormData } from "../types/AuthInterface"
 import { apiAuth } from "./api"
 
 const baseURL ='/public'

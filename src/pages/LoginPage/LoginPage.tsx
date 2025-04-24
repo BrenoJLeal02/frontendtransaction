@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { LoginFormData } from "../../types/InterfaceAuth";
+import { LoginFormData } from "../../types/AuthInterface";
 import { useState } from "react";
 import { login } from "../../service/Auth";
 //Vá nos componentes CustomLabel e CustomInput, lá tem uma explicação do que foi feito.

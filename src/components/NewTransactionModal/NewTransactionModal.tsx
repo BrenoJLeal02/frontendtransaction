@@ -12,20 +12,8 @@ import {
   } from "@chakra-ui/react";
   import { FaArrowCircleUp, FaArrowCircleDown } from "react-icons/fa";
   import { Controller, useForm } from "react-hook-form";
-  
-  type NewTransactionFormInput = {
-    description: string;
-    price: number;
-    category: string;
-    type: "income" | "outcome";
-  };
-  
-  type NewTransactionModalProps = {
-    isOpen: boolean;
-    onClose: () => void;
-    onCreateTransaction: (data: NewTransactionFormInput) => Promise<void>;
-  };
-  
+import { NewTransactionFormInput, NewTransactionModalProps } from "../../types/TransactionInterface";
+    
   export function NewTransactionModal({
     isOpen,
     onClose,
