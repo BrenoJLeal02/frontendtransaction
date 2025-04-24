@@ -16,6 +16,7 @@ import {
   NewTransactionFormInput,
   NewTransactionModalProps,
 } from "../../types/TransactionInterface";
+import { CustomInput } from "../CustomInput/CustomInput";
 
 export function NewTransactionModal({
   isOpen,
@@ -43,32 +44,26 @@ export function NewTransactionModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent bg="gray.800" color="white" p={6}>
+      <ModalContent bg="#202024" color="white" p={6}>
         <ModalHeader>Nova Transação</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody as="form" onSubmit={handleSubmit(handleCreate)}>
           <VStack spacing={4}>
-            <Input
+            <CustomInput
               placeholder="Descrição"
               {...register("description", { required: true })}
-              bg="gray.700"
-              _placeholder={{ color: "gray.400" }}
               border="none"
             />
-            <Input
+            <CustomInput
               placeholder="Preço"
               type="number"
               {...register("price", { required: true, valueAsNumber: true })}
-              bg="gray.700"
-              _placeholder={{ color: "gray.400" }}
               border="none"
             />
-            <Input
+            <CustomInput
               placeholder="Categoria"
               {...register("category", { required: true })}
-              bg="gray.700"
-              _placeholder={{ color: "gray.400" }}
               border="none"
             />
 
@@ -80,8 +75,9 @@ export function NewTransactionModal({
                   <Button
                     onClick={() => field.onChange("income")}
                     leftIcon={<FaArrowCircleUp />}
-                    bg={field.value === "income" ? "green.500" : "gray.700"}
+                    bg={field.value === "income" ? "green.500" : "#29292E"}
                     _hover={{ bg: "green.600" }}
+                    color={"#fff"}
                     flex="1"
                   >
                     Entrada
@@ -89,8 +85,9 @@ export function NewTransactionModal({
                   <Button
                     onClick={() => field.onChange("outcome")}
                     leftIcon={<FaArrowCircleDown />}
-                    bg={field.value === "outcome" ? "red.500" : "gray.700"}
+                    bg={field.value === "outcome" ? "red.500" : "#29292E"}
                     _hover={{ bg: "red.600" }}
+                    color={"#fff"}
                     flex="1"
                   >
                     Saída
@@ -105,7 +102,7 @@ export function NewTransactionModal({
               width="100%"
               isLoading={isSubmitting}
             >
-              Concluir
+              Finalizar
             </Button>
           </VStack>
         </ModalBody>
