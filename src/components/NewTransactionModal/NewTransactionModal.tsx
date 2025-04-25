@@ -6,39 +6,63 @@ import {
   ModalCloseButton,
   ModalBody,
   Button,
-  Input,
   VStack,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
 import { FaArrowCircleUp, FaArrowCircleDown } from "react-icons/fa";
 import { Controller, useForm } from "react-hook-form";
-import {
-  NewTransactionFormInput,
-  NewTransactionModalProps,
-} from "../../types/TransactionInterface";
+import { NewTransactionFormInput, NewTransactionModalProps } from "../../types/TransactionInterface";
 import { CustomInput } from "../CustomInput/CustomInput";
+import { onCreateTransaction } from "../../service/Transaction";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
-export function NewTransactionModal({
-  isOpen,
-  onClose,
-  onCreateTransaction,
-}: NewTransactionModalProps) {
+export function NewTransactionModal({ isOpen, onClose }: NewTransactionModalProps) {
+  const toast = useToast();
+  const { userId } = useAuthUser();
+
   const {
     control,
     register,
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<NewTransactionFormInput>({
+  } = useForm<Omit<NewTransactionFormInput, "userId">>({
     defaultValues: {
       type: "income",
     },
   });
 
-  async function handleCreate(data: NewTransactionFormInput) {
-    await onCreateTransaction(data);
-    reset();
-    onClose();
+  async function handleCreate(data: Omit<NewTransactionFormInput, "userId">) {
+    try {
+      if (!userId) throw new Error("Usuário não autenticado.");
+
+      const dataWithUserId: NewTransactionFormInput = {
+        ...data,
+        userId,
+      };
+
+      await onCreateTransaction(dataWithUserId);
+      toast({
+        title: "Transação criada!",
+        description: "Sua transação foi adicionada com sucesso.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      reset();
+      onClose();
+    } catch (err: any) {
+      console.error("Erro ao criar transação", err);
+      toast({
+        title: "Erro ao criar transação",
+        description: err.message || "Tente novamente mais tarde.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
   }
 
   return (
@@ -47,18 +71,12 @@ export function NewTransactionModal({
       <ModalContent bg="#202024" color="white" p={6}>
         <ModalHeader>Nova Transação</ModalHeader>
         <ModalCloseButton />
-
         <ModalBody as="form" onSubmit={handleSubmit(handleCreate)}>
           <VStack spacing={4}>
             <CustomInput
-              placeholder="Descrição"
-              {...register("description", { required: true })}
-              border="none"
-            />
-            <CustomInput
-              placeholder="Preço"
+              placeholder="Quantidade"
               type="number"
-              {...register("price", { required: true, valueAsNumber: true })}
+              {...register("amount", { required: true, valueAsNumber: true })}
               border="none"
             />
             <CustomInput

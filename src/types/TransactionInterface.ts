@@ -1,13 +1,12 @@
 export interface NewTransactionFormInput{
-    description: string;
-    price: number;
+    userId: string;
+    amount: number;
     category: string;
     type: "income" | "outcome";
   };
   
-export interface NewTransactionModalProps{
+  export interface NewTransactionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onCreateTransaction: (data: NewTransactionFormInput) => Promise<void>;
-  };
+  }
   

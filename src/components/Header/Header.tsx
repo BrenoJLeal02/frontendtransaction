@@ -5,47 +5,46 @@ import {
   Container,
   useDisclosure,
   Image,
+  Avatar,
 } from "@chakra-ui/react";
 import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal";
 import logoImg from "../../assets/logo.svg";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 export function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const handleCreateTransaction = async (data: {
-    description: string;
-    price: number;
-    category: string;
-    type: "income" | "outcome";
-  }) => {
-    console.log("Criando transação", data);
-  };
-
+  const { username } = useAuthUser();
+ 
   return (
     <Box bg="#121214" pb="7.5rem" pt="2.5rem">
       <Container maxW="1120px" px="1.5rem">
         <Flex justify="space-between" align="center">
           <Image src={logoImg} alt="Logo" height="40px" />
-          <Button
-            height="50px"
-            bg="green.500"
-            color="white"
-            fontWeight="bold"
-            px="1.25rem"
-            borderRadius="6px"
-            _hover={{ bg: "green.700" }}
-            onClick={onOpen}
-          >
-            Nova transação
-          </Button>
+
+          <Flex align="center" gap={4}>
+            {username && (
+              <Flex align="center" gap={2}>
+                <Avatar name={username} size="md"/>         
+              </Flex>
+            )}
+
+            <Button
+              height="50px"
+              bg="green.500"
+              color="white"
+              fontWeight="bold"
+              px="1.25rem"
+              borderRadius="6px"
+              _hover={{ bg: "green.700" }}
+              onClick={onOpen}
+            >
+              Nova transação
+            </Button>
+          </Flex>
         </Flex>
       </Container>
 
-      <NewTransactionModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onCreateTransaction={handleCreateTransaction}
-      />
+      <NewTransactionModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 }
