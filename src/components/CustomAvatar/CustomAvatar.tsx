@@ -7,7 +7,7 @@ export function CustomAvatar() {
     <>
       {username && (
         <Flex align="center" gap={2}>
-          <Avatar name={username} size="md" />
+          <Avatar name={username} size="md" bg="green.500" />
         </Flex>
       )}
     </>

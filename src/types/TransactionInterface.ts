@@ -2,7 +2,7 @@ export interface NewTransactionFormInput{
     userId: string;
     amount: number;
     category: string;
-    type: "income" | "outcome";
+    type: "income" | "expense";
   };
   
   export interface NewTransactionModalProps {
@@ -10,3 +10,16 @@ export interface NewTransactionFormInput{
     onClose: () => void;
   }
   
+  export interface findTransactionProps{
+    id: string;
+    userId: string;
+    amount: number;
+    category: string;
+    type: "income" | "expense";
+    createdAt: Date;
+  }
+  export interface findTransactionParams {
+    userId?: string;
+    type?: "income" | "expense";
+    category?: string;
+  }
