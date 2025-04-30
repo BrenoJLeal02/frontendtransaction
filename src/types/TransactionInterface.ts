@@ -23,3 +23,9 @@ export interface NewTransactionFormInput{
     type?: "income" | "expense";
     category?: string;
   }
+
+  export interface BalanceTransactionProps {
+    income: number;
+    expense: number;
+    total: number;
+  }

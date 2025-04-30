@@ -1,4 +1,4 @@
-import { findTransactionParams, findTransactionProps, NewTransactionFormInput } from "../types/TransactionInterface";
+import { BalanceTransactionProps, findTransactionParams, findTransactionProps, NewTransactionFormInput } from "../types/TransactionInterface";
 import { apiAuth } from "./api";
 
 const baseURL = "/private";
@@ -11,8 +11,13 @@ const findTransaction = async (params?: findTransactionParams): Promise<findTran
   const response = await apiAuth.get(`${baseURL}/transaction/find`, { params });
   return response.data;
 };
+const balanceTransaction = async (params?: findTransactionParams): Promise<BalanceTransactionProps> => {
+  const response = await apiAuth.get(`${baseURL}/transaction/balance`, { params });
+  return response.data;
+}
 
 export{ 
     onCreateTransaction, 
-    findTransaction
+    findTransaction,
+    balanceTransaction
   };

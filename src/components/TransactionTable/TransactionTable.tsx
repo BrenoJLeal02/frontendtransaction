@@ -10,7 +10,8 @@ import {
   Spinner,
   Center,
   Text,
-  Flex
+  Flex,
+  TableContainer,
 } from "@chakra-ui/react";
 import { findTransaction } from "../../service/Transaction";
 import { findTransactionProps } from "../../types/TransactionInterface";
@@ -41,7 +42,7 @@ export function TransactionTable() {
   }, []);
 
   return (
-    <Box p={6}>
+    <Box width="100%" maxW="1120px" mx="auto" px="1.5rem">
       {loading ? (
         <Center>
           <Spinner size="lg" />
@@ -49,36 +50,58 @@ export function TransactionTable() {
       ) : transactions.length === 0 ? (
         <Text>Nenhuma transação encontrada.</Text>
       ) : (
-        <Table variant="simple" size="md">
-          <Thead>
-            <Tr>
-              <Th>Valor</Th>
-              <Th>Categoria</Th>
-              <Th>Tipo</Th>
-              <Th>Data</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {transactions.map((tx) => (
-              <Tr key={tx.id}>
-                <Td>{tx.type === "expense" ? "- " : ""}{priceFormatter.format(tx.amount)}</Td>
-                <Td>{tx.category}</Td>
-                <Td textTransform="capitalize">
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Box>
-                      {tx.type === "income" ? (
-                        <MdArrowUpward color="green" />
-                      ) : (
-                        <MdArrowDownward color="red" />
-                      )}
-                    </Box>           
-                  </Flex>
-                </Td>
-                <Td>{new Date(tx.createdAt).toLocaleDateString()}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+        <TableContainer>
+          <Table
+            variant="unstyled"
+            mt="1.5rem"
+            style={{
+              borderCollapse: "separate",
+              borderSpacing: "0 8px",
+            }}
+          >
+            <Tbody>
+              {transactions.map((tx) => (
+                <Tr key={tx.id}>
+                  <Td
+                    bg="#323238"
+                    borderTopLeftRadius="6px"
+                    borderBottomLeftRadius="6px"
+                    paddingY="1.25rem"
+                    paddingX="2rem"
+                    textAlign="center"
+                  >
+                    {tx.category}
+                  </Td>
+                  <Td
+                    bg="#323238"
+                    paddingY="1.25rem"
+                    paddingX="2rem"
+                    textAlign="center"
+                  >
+                    <Text
+                      fontWeight="bold"
+                      color={tx.type === "income" ? "green.300" : "red.300"}
+                    >
+                      {tx.type === "expense" ? "- " : ""}
+                      {priceFormatter.format(tx.amount)}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    bg="#323238"
+                    borderTopRightRadius="6px"
+                    borderBottomRightRadius="6px"
+                    paddingY="1.25rem"
+                    paddingX="2rem"
+                    textAlign="center"
+                  >
+                    {new Date(tx.createdAt).toLocaleDateString()}
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
       )}
     </Box>
   );
