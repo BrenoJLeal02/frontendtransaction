@@ -2,7 +2,7 @@ export interface NewTransactionFormInput{
     userId: string;
     amount: number;
     category: string;
-    type: "income" | "outcome";
+    type: "income" | "expense";
   };
   
   export interface NewTransactionModalProps {

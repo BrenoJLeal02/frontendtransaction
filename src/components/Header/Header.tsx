@@ -14,6 +14,7 @@ import { useAuthUser } from "../../hooks/useAuthUser";
 export function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { username } = useAuthUser();
+  
  
   return (
     <Box bg="#121214" pb="7.5rem" pt="2.5rem">

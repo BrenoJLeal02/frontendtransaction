@@ -101,9 +101,9 @@ export function NewTransactionModal({ isOpen, onClose }: NewTransactionModalProp
                     Entrada
                   </Button>
                   <Button
-                    onClick={() => field.onChange("outcome")}
+                    onClick={() => field.onChange("expense")}
                     leftIcon={<FaArrowCircleDown />}
-                    bg={field.value === "outcome" ? "red.500" : "#29292E"}
+                    bg={field.value === "expense" ? "red.500" : "#29292E"}
                     _hover={{ bg: "red.600" }}
                     color={"#fff"}
                     flex="1"
