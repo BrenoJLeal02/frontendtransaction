@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('jwtToken') || 'no token';
-
 export const apiAuth = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
 });
+
+// Esta função atualiza o token após o login
+export function setAuthToken(token: string) {
+  apiAuth.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}

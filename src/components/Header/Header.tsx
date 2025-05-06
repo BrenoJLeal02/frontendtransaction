@@ -4,18 +4,14 @@ import {
   Button,
   Container,
   useDisclosure,
-  Image,
-  Avatar,
+  Image
 } from "@chakra-ui/react";
 import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal";
 import logoImg from "../../assets/logo.svg";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import { CustomAvatar } from "../CustomAvatar/CustomAvatar";
 
 export function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { username } = useAuthUser();
-  
- 
   return (
     <Box bg="#121214" pb="7.5rem" pt="2.5rem">
       <Container maxW="1120px" px="1.5rem">
@@ -23,12 +19,7 @@ export function Header() {
           <Image src={logoImg} alt="Logo" height="40px" />
 
           <Flex align="center" gap={4}>
-            {username && (
-              <Flex align="center" gap={2}>
-                <Avatar name={username} size="md"/>         
-              </Flex>
-            )}
-
+            <CustomAvatar />
             <Button
               height="50px"
               bg="green.500"
@@ -44,7 +35,6 @@ export function Header() {
           </Flex>
         </Flex>
       </Container>
-
       <NewTransactionModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );

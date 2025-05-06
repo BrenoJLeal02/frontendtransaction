@@ -15,6 +15,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { LoginFormData } from "../../types/AuthInterface";
 import { useState } from "react";
 import { login } from "../../service/Auth";
+import { setAuthToken } from "../../service/api";
 //Vá nos componentes CustomLabel e CustomInput, lá tem uma explicação do que foi feito.
 export function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
@@ -25,8 +26,9 @@ export function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       setLoading(true);
-      const response = await login(data); 
-      localStorage.setItem("jwtToken", response.token);  
+      const response = await login(data);
+      localStorage.setItem("jwtToken", response.token);
+      setAuthToken(response.token);
       
       toast({
         title: "Login realizado com sucesso",
