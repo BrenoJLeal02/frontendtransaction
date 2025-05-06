@@ -4,6 +4,7 @@ import { Box, Text, Flex, useColorModeValue } from "@chakra-ui/react";
 import { priceFormatter } from "../../utils/priceFormatter";
 import { balanceTransaction } from "../../service/Transaction";
 import { BalanceTransactionProps } from "../../types/TransactionInterface";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 export function Summary() {
   const [summary, setSummary] = useState<BalanceTransactionProps>({
@@ -11,11 +12,16 @@ export function Summary() {
     expense: 0,
     total: 0,
   });
+  const { userId } = useAuthUser();
+
 
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const data = await balanceTransaction();
+        if (!userId) return; 
+  
+        const data = await balanceTransaction({ userId });
+  
         setSummary({
           income: data.income,
           expense: data.expense,
@@ -25,9 +31,10 @@ export function Summary() {
         console.error("Erro ao buscar resumo de transações:", error);
       }
     };
-
+  
     fetchBalance();
-  }, []);
+  }, [userId]);
+  
 
   const bgColor = useColorModeValue("#323238", "gray.700");
   const headerColor = useColorModeValue("gray.300", "gray.200");
