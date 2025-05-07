@@ -10,7 +10,11 @@ import { NewTransactionModal } from "../NewTransactionModal/NewTransactionModal"
 import logoImg from "../../assets/logo.svg";
 import { CustomAvatar } from "../CustomAvatar/CustomAvatar";
 
-export function Header() {
+interface HeaderProps {
+  onTransactionCreated: () => void;
+}
+
+export function Header({ onTransactionCreated }: HeaderProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -36,7 +40,12 @@ export function Header() {
           </Flex>
         </Flex>
       </Container>
-      <NewTransactionModal isOpen={isOpen} onClose={onClose} />
+
+      <NewTransactionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onTransactionCreated={onTransactionCreated}
+      />
     </Box>
   );
 }

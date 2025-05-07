@@ -12,12 +12,23 @@ import {
 } from "@chakra-ui/react";
 import { FaArrowCircleUp, FaArrowCircleDown } from "react-icons/fa";
 import { Controller, useForm } from "react-hook-form";
-import { NewTransactionFormInput, NewTransactionModalProps } from "../../types/TransactionInterface";
+import {
+  NewTransactionFormInput,
+  NewTransactionModalProps,
+} from "../../types/TransactionInterface";
 import { CustomInput } from "../CustomInput/CustomInput";
 import { onCreateTransaction } from "../../service/Transaction";
 import { useAuthUser } from "../../hooks/useAuthUser";
 
-export function NewTransactionModal({ isOpen, onClose }: NewTransactionModalProps) {
+interface ExtendedNewTransactionModalProps extends NewTransactionModalProps {
+  onTransactionCreated: () => void;
+}
+
+export function NewTransactionModal({
+  isOpen,
+  onClose,
+  onTransactionCreated,
+}: ExtendedNewTransactionModalProps) {
   const toast = useToast();
   const { userId } = useAuthUser();
 
@@ -53,6 +64,7 @@ export function NewTransactionModal({ isOpen, onClose }: NewTransactionModalProp
 
       reset();
       onClose();
+      onTransactionCreated();
     } catch (err: any) {
       console.error("Erro ao criar transação", err);
       toast({

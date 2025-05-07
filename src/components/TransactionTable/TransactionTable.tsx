@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Box,
   Table,
@@ -12,33 +11,17 @@ import {
   Input,
   TableContainer,
 } from "@chakra-ui/react";
-import { findTransaction } from "../../service/Transaction";
+import { useState } from "react";
 import { findTransactionProps } from "../../types/TransactionInterface";
 import { priceFormatter } from "../../utils/priceFormatter";
 
-export function TransactionTable() {
-  const [transactions, setTransactions] = useState<findTransactionProps[]>([]);
-  const [loading, setLoading] = useState(true);
+interface TransactionTableProps {
+  transactions: findTransactionProps[];
+  loading: boolean;
+}
+
+export function TransactionTable({ transactions, loading }: TransactionTableProps) {
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await findTransaction();
-        const sorted = data.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setTransactions(sorted);
-      } catch (error) {
-        console.error("Erro ao buscar transações:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const filteredTransactions = transactions.filter((tx) =>
     tx.category.toLowerCase().includes(search.toLowerCase())
@@ -66,28 +49,6 @@ export function TransactionTable() {
           borderRadius="md"
           flex="1"
         />
-
-        <Box
-          as="button"
-          type="button"
-          px="1rem"
-          fontWeight="bold"
-          borderRadius="md"
-          border="1px solid"
-          borderColor="green.300"
-          color="green.300"
-          background="transparent"
-          _hover={{
-            bg: "green.500",
-            color: "white",
-            borderColor: "green.500",
-          }}
-          transition="all 0.2s"
-          cursor="pointer"
-          onClick={() => {}}
-        >
-          Buscar
-        </Box>
       </Flex>
 
       {loading ? (
@@ -95,7 +56,7 @@ export function TransactionTable() {
           <Spinner size="lg" />
         </Center>
       ) : filteredTransactions.length === 0 ? (
-        <Text>Nenhuma transação encontrada.</Text>
+        <Text color="gray.300">Nenhuma transação encontrada.</Text>
       ) : (
         <TableContainer>
           <Table

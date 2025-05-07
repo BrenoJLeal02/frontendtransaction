@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { jwtDecode } from "jwt-decode";
 
 export interface DecodedToken {
   sub: string; 
@@ -15,18 +16,33 @@ export function useAuthUser() {
     if (!token) return null;
 
     try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload as DecodedToken;
+      const decodedToken = jwtDecode<DecodedToken>(token);
+
+      // Verifica se o token expirou
+      const isExpired = decodedToken.exp * 1000 < Date.now();
+      if (isExpired) {
+        console.warn("Token expirado.");
+        return null;
+      }
+
+      return decodedToken;
     } catch (error) {
       console.error("Erro ao decodificar token:", error);
       return null;
     }
   }, [token]);
 
+  // Função de logout
+  const logout = () => {
+    localStorage.removeItem("jwtToken");
+    window.location.href = "/"; // redireciona para a página de login
+  };
+
   return {
     userId: decoded?.sub ?? null,
     email: decoded?.email ?? null,
     username: decoded?.username ?? null,
     isAuthenticated: !!decoded,
+    logout,
   };
 }
