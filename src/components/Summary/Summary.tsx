@@ -1,44 +1,27 @@
-import { useEffect, useState } from "react";
+import { Box } from "@chakra-ui/react";
 import { FiArrowUpCircle, FiArrowDownCircle, FiDollarSign } from "react-icons/fi";
-import { Box, Text, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Text, Flex, useColorModeValue } from "@chakra-ui/react";
 import { priceFormatter } from "../../utils/priceFormatter";
-import { balanceTransaction } from "../../service/Transaction";
-import { BalanceTransactionProps } from "../../types/TransactionInterface";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import {findTransactionProps } from "../../types/TransactionInterface";
 
-export function Summary() {
-  const [summary, setSummary] = useState<BalanceTransactionProps>({
-    income: 0,
-    expense: 0,
-    total: 0,
-  });
-  const { userId } = useAuthUser();
+interface SummaryProps {
+  transactions: findTransactionProps[];
+}
+// O componente Summary exibe um resumo das transações financeiras, incluindo entradas, saídas e total
+// Ele recebe um array de transações como propriedade e calcula os valores das entradas, saídas e o total.
+// O resumo é exibido em cartões com cores distintas para entradas e saídas.
+// O componente utiliza o Chakra UI para estilização e ícones do react-icons para representar visualmente as entradas e saídas.
+// O priceFormatter é utilizado para formatar os valores monetários de acordo com a localidade do usuário.
 
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        if (!userId) return; 
-  
-        const data = await balanceTransaction({ userId });
-  
-        setSummary({
-          income: data.income,
-          expense: data.expense,
-          total: data.income - data.expense,
-        });
-      } catch (error) {
-        console.error("Erro ao buscar resumo de transações:", error);
-      }
-    };
-  
-    fetchBalance();
-  }, [userId]);
-  
-
+export function Summary({ transactions }: SummaryProps) {
   const bgColor = useColorModeValue("#323238", "gray.700");
   const headerColor = useColorModeValue("gray.300", "gray.200");
   const greenCardBg = useColorModeValue("green.700", "green.600");
+
+  // Calculando o resumo de transações
+  const income = transactions.filter(tx => tx.type === "income").reduce((sum, tx) => sum + tx.amount, 0);
+  const expense = transactions.filter(tx => tx.type === "expense").reduce((sum, tx) => sum + tx.amount, 0);
+  const total = income - expense;
 
   return (
     <Flex
@@ -63,7 +46,7 @@ export function Summary() {
           <FiArrowUpCircle size={32} color="#00b37e" />
         </Flex>
         <Text mt="1rem" fontSize="2xl" fontWeight="bold">
-          {priceFormatter.format(summary.income)}
+          {priceFormatter.format(income)}
         </Text>
       </Box>
 
@@ -80,7 +63,7 @@ export function Summary() {
           <FiArrowDownCircle size={32} color="#f75a68" />
         </Flex>
         <Text mt="1rem" fontSize="2xl" fontWeight="bold">
-          {priceFormatter.format(summary.expense)}
+          {priceFormatter.format(expense)}
         </Text>
       </Box>
 
@@ -98,7 +81,7 @@ export function Summary() {
           <FiDollarSign size={32} color="#fff" />
         </Flex>
         <Text mt="1rem" fontSize="2xl" fontWeight="bold">
-          {priceFormatter.format(summary.total)}
+          {priceFormatter.format(total)}
         </Text>
       </Box>
     </Flex>

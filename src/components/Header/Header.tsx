@@ -14,6 +14,12 @@ interface HeaderProps {
   onTransactionCreated: () => void;
 }
 
+// O componente header compoem a logo, o avatar e o botão para acionar o modal de nova transação
+// O modal é um componente separado que é chamado quando o botão é clicado
+// O modal é controlado pelo estado isOpen, que é gerenciado pelo hook useDisclosure do Chakra UI
+// O onTransactionCreated é uma função passada como prop para o Header, que é chamada quando uma nova transação é criada
+// Isso permite que o Header saiba quando uma nova transação foi criada e possa atualizar a lista de transações, se necessário.
+
 export function Header({ onTransactionCreated }: HeaderProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 

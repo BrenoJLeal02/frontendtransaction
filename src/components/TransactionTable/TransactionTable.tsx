@@ -20,6 +20,13 @@ interface TransactionTableProps {
   loading: boolean;
 }
 
+// O componente TransactionTable exibe uma tabela de transações financeiras, permitindo filtrar por categoria
+// e exibindo informações como data, descrição, valor e categoria.
+// Ele também inclui um indicador de carregamento enquanto as transações são buscadas.
+// O filtro é realizado em tempo real conforme o usuário digita na caixa de pesquisa.
+
+
+
 export function TransactionTable({ transactions, loading }: TransactionTableProps) {
   const [search, setSearch] = useState("");
 

@@ -8,6 +8,12 @@ export interface DecodedToken {
   exp: number;
   iat: number;
 }
+/// Hook para decodificar o token JWT e obter informações do usuário
+// O hook também fornece uma função de logout para remover o token do localStorage
+// e redirecionar o usuário para a página de login
+// O hook usa o hook useMemo do React para memorizar o valor decodificado do token
+// e evitar cálculos desnecessários em renderizações subsequentes
+ // O hook também verifica se o token expirou antes de retornar as informações do usuário
 
 export function useAuthUser() {
   const token = localStorage.getItem("jwtToken");

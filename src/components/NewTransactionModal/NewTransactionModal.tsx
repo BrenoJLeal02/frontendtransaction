@@ -23,6 +23,12 @@ import { useAuthUser } from "../../hooks/useAuthUser";
 interface ExtendedNewTransactionModalProps extends NewTransactionModalProps {
   onTransactionCreated: () => void;
 }
+/// O componente NewTransactionModal é um modal que permite ao usuário criar uma nova transação
+// Ele utiliza o Chakra UI para estilização e o react-hook-form para gerenciamento de formulários
+// O modal é controlado pelo estado isOpen, que é passado como prop para o componente
+// O onClose é uma função que fecha o modal quando chamada
+// O onTransactionCreated é uma função que é chamada quando uma nova transação é criada com sucesso
+// O modal contém um formulário com campos para quantidade, categoria e tipo de transação (entrada ou saída)
 
 export function NewTransactionModal({
   isOpen,
