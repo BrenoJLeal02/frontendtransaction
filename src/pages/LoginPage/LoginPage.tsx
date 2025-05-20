@@ -23,32 +23,33 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    try {
-      setLoading(true);
-      const response = await login(data); 
-      localStorage.setItem("jwtToken", response.token);  
-      
-      toast({
-        title: "Login realizado com sucesso",
-        description: `Bem-vindo de volta, ${response.username}`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+  try {
+    setLoading(true);
+    const response = await login(data); 
+    localStorage.setItem("jwtToken", response.token);  
+    
+    toast({
+      title: "Login realizado com sucesso",
+      description: `Bem-vindo de volta, ${response.username}`,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
 
-      navigate("/transacao");  
-    } catch (error: any) {
-      toast({
-        title: "Erro ao fazer login",
-        description: error.response?.data?.message || "Erro ao autenticar o usuário",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    window.location.href = "/transacao";  
+
+  } catch (error: any) {
+    toast({
+      title: "Erro ao fazer login",
+      description: error.response?.data?.message || "Erro ao autenticar o usuário",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Flex minH="100vh" align="center" justify="center">
