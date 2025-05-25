@@ -44,11 +44,21 @@ export function useAuthUser() {
     window.location.href = "/"; // redireciona para a página de login
   };
 
+  // redirecionar para perfil ou transações - colocando aqui temporariamente mas onde isso deve estar?
+  const profile = () => {
+    window.location.href = "/perfil"
+  }
+  const transactions = () => {
+    window.location.href = "/transacao"
+  }
+
   return {
     userId: decoded?.sub ?? null,
     email: decoded?.email ?? null,
     username: decoded?.username ?? null,
     isAuthenticated: !!decoded,
     logout,
+    profile,
+    transactions
   };
 }

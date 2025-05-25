@@ -1,4 +1,5 @@
 import { LoginPage } from "../pages/LoginPage/LoginPage";
+import { ProfilePage } from "../pages/ProfilePage/ProfilePage";
 import { RegisterPage } from "../pages/RegisterPage/RegisterPage";
 import { TransactionPage } from "../pages/TransactionPage/TransactionPage";
 // Esse componente serve como um intermediário para renderizar a página de login.
@@ -27,4 +28,12 @@ export function Transaction() {
       <TransactionPage />
     </>
   );
+}
+
+export function Profile() {
+  return (
+    <>
+    <ProfilePage />
+    </>
+  )
 }

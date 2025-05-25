@@ -1,5 +1,5 @@
 import {Route, Routes} from 'react-router-dom'
-import { Login, Register, Transaction } from '.'
+import { Login, Profile, Register, Transaction } from '.'
 
 //Aqui estamos definindo as rotas principais da aplicação usando o 'react-router-dom'. 
 // O componente 'Routes' funciona como um container para todas as rotas da aplicação. Cada 'Route' representa uma URL específica e qual componente deve ser renderizado quando o usuário acessar essa URL. 
@@ -10,6 +10,7 @@ export function MainRoutes(){
             <Route path="/" element={<Login/>}/>
             <Route path="/registro" element={<Register/>}/>
             <Route path="/transacao" element={<Transaction/>}/>
+            <Route path="/perfil" element={<Profile/>} />
         </Routes>
     )
 }
