@@ -31,9 +31,15 @@ const balanceTransaction = async (params?: findTransactionParams): Promise<Balan
   return response.data;
 };
 
+const deleteTransaction = async (id: string): Promise<void> => {
+  const response = await apiAuth.delete(`${baseURL}/transaction/delete/${id}`);
+  return response.data;
+}
+
 // Exporta as funções para serem usadas em outras partes do aplicativo
-export { 
-    onCreateTransaction, 
-    findTransaction,
-    balanceTransaction
+export {
+  onCreateTransaction,
+  findTransaction,
+  balanceTransaction,
+  deleteTransaction
 };
