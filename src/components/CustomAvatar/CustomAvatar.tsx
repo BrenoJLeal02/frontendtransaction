@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { FiDollarSign, FiLogOut, FiUser } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 // O componente CustomAvatar exibe um avatar do usuário logado e um menu de opções
 // O menu contém uma opção para sair da conta
@@ -19,7 +20,7 @@ import { FiDollarSign, FiLogOut, FiUser } from "react-icons/fi";
 
 
 export function CustomAvatar() {
-  const { username, logout, profile, transactions } = useAuthUser(); 
+  const { username, logout } = useAuthUser(); 
 
   return (
     <>
@@ -31,12 +32,16 @@ export function CustomAvatar() {
             </Flex>
           </MenuButton>
           <MenuList bg={"#000"}>
-            <MenuItem bg={"#000"}  icon={<FiUser />} onClick={profile}>
-              Perfil
-            </MenuItem>
-            <MenuItem bg={"#000"} icon={<FiDollarSign />} onClick={transactions}>
-              Transações
-            </MenuItem>
+            <Link to="/perfil">
+              <MenuItem bg={"#000"}  icon={<FiUser />}>
+                Perfil
+              </MenuItem>
+            </Link>
+            <Link to="/transacao">
+              <MenuItem bg={"#000"} icon={<FiDollarSign />}>
+                Transações
+              </MenuItem>
+            </Link>
             <MenuItem bg={"#000"}  icon={<FiLogOut />} onClick={logout}>
               Sair
             </MenuItem>
