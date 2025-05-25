@@ -4,11 +4,13 @@ import { ProfileData } from "../../components/ProfileData/ProfileData";
 import { useEffect, useState } from "react";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { UserData } from "../../types/UserInterface";
-import { fetchUser } from "../../service/User";
+import { fetchUser, editUser } from "../../service/User";
+import { EditUserModal } from "../../components/EditUserModal/EditUserModal";
 
 export function ProfilePage() {
   const [user, setUser] = useState<UserData>();
   const [loading, setLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { userId } = useAuthUser();
 
   const loadProfile = async (userId: string) => {
@@ -24,13 +26,40 @@ export function ProfilePage() {
   };
 
   useEffect(() => {
-    loadProfile(userId!);
+    if (userId) loadProfile(userId);
   }, [userId]);
+
+  const updateUser = async (userId: string, data: UserData) => {
+    setLoading(true)
+    try {
+      const response = await editUser(userId, data);
+      setUser(response)
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false)
+    }
+  };
 
   return (
     <Box>
-      <Header onTransactionCreated={() => {}}/>
-      <ProfileData data={user} loading={loading} />
+      <Header onTransactionCreated={() => {}} />
+      <ProfileData
+        data={user}
+        loading={loading}
+        onEditClick={() => setIsEditModalOpen(true)}
+      />
+
+      {user && (
+        <>
+          <EditUserModal
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+            userData={user}
+            onUpdate={updateUser}
+          />
+        </>
+      )}
     </Box>
-  )
+  );
 }

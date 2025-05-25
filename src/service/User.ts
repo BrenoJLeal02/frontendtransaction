@@ -8,8 +8,8 @@ const fetchUser = async (userId: string): Promise<UserData> => {
   return response.data
 }
 
-const editUser = async (userId: string) => {
-  const response = await apiAuth.put(`${baseURL}/user/update/${userId}`)
+const editUser = async (userId: string, data: UserData) => {
+  const response = await apiAuth.put(`${baseURL}/user/update/${userId}`, data)
   return response.data;
 }
 

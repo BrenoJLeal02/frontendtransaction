@@ -1,12 +1,14 @@
-import { Box, Center, Flex, Spinner, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Spinner, Text, useColorModeValue } from "@chakra-ui/react";
 import { UserData } from "../../types/UserInterface";
 
 interface ProfileProps {
   data: UserData;
-  loading: boolean
+  loading: boolean;
+  onEditClick: () => void;
+  onChangePasswordClick: () => void;
 }
 
-export function ProfileData({ data, loading }: ProfileProps) {
+export function ProfileData({ data, loading, onEditClick, onChangePasswordClick }: ProfileProps) {
   const bgColor = useColorModeValue("#323238", "gray.700");
   const headerColor = useColorModeValue("gray.300", "gray.100");
 
@@ -32,16 +34,24 @@ export function ProfileData({ data, loading }: ProfileProps) {
             <Text fontSize="2xl">Dados do usuário</Text>
           </Flex>
           <Flex justify="space-between" align="center" p="0.5rem">
-            <Text mt={"1rem"} color={headerColor}>nome</Text>
+            <Text mt="1rem" color={headerColor}>nome</Text>
             <Text mt="1rem" fontWeight="bold">{data.name}</Text>
           </Flex>
           <Flex justify="space-between" align="center" p="0.5rem">
-            <Text mt={"1rem"} color={headerColor}>username</Text>
+            <Text mt="1rem" color={headerColor}>username</Text>
             <Text mt="1rem" fontWeight="bold">{data.username}</Text>
           </Flex>
           <Flex justify="space-between" align="center" p="0.5rem">
-            <Text mt={"1rem"} color={headerColor}>e-mail</Text>
+            <Text mt="1rem" color={headerColor}>e-mail</Text>
             <Text mt="1rem" fontWeight="bold">{data.email}</Text>
+          </Flex>
+          <Flex mt="2rem" justify="space-between">
+            <Button size="sm" onClick={onEditClick}>
+              Editar dados
+            </Button>
+            <Button size="sm" onClick={onChangePasswordClick}>
+              Alterar senha
+            </Button>
           </Flex>
         </Box>
       )}

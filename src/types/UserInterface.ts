@@ -3,4 +3,12 @@ export interface UserData {
   name: string;
   username: string;
   email: string;
+  password?: string
+}
+
+export interface EditUserProps {
+  isOpen: boolean;
+  onClose: () => void;
+  userData: UserData;
+  onUpdate: (userId: string, data: UserData) => void
 }
