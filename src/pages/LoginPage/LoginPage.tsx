@@ -1,9 +1,56 @@
-import { Box, Container, Select, VStack, Heading, Button, Flex, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import {
+  Box,
+  Container,
+  VStack,
+  Heading,
+  Button,
+  Flex,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { LoginFormData } from "../../types/AuthInterface";
+import { useState } from "react";
+import { login } from "../../service/Auth";
 //Vá nos componentes CustomLabel e CustomInput, lá tem uma explicação do que foi feito.
 export function LoginPage() {
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+  try {
+    setLoading(true);
+    const response = await login(data); 
+    localStorage.setItem("jwtToken", response.token);  
+    
+    toast({
+      title: "Login realizado com sucesso",
+      description: `Bem-vindo de volta, ${response.username}`,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    window.location.href = "/transacao";  
+
+  } catch (error: any) {
+    toast({
+      title: "Erro ao fazer login",
+      description: error.response?.data?.message || "Erro ao autenticar o usuário",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <Flex minH="100vh" align="center" justify="center">
       <Container maxW="md" py={10}>
@@ -12,47 +59,62 @@ export function LoginPage() {
             Login
           </Heading>
 
-          <VStack spacing={4} align="stretch">
-            <Box>
-              <CustomLabel>Email</CustomLabel>
-              <CustomInput type="email" placeholder="Digite seu email" />
-            </Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <VStack spacing={4} align="stretch">
+              <Box>
+                <CustomLabel>Email</CustomLabel>
+                <CustomInput
+                  type="text"
+                  placeholder="Digite seu email"
+                  {...register("email", {
+                    required: "Email é obrigatório",
+                  })}
+                />
+                {errors.email && (
+                  <Text color="red.400" fontSize="sm" mt={1}>
+                    {errors.email.message}
+                  </Text>
+                )}
+              </Box>
 
-            <Box>
-              <CustomLabel>Username</CustomLabel>
-              <CustomInput type="text" placeholder="Digite seu username" />
-            </Box>
+              <Box>
+                <CustomLabel>Password</CustomLabel>
+                <CustomInput
+                  type="password"
+                  placeholder="Digite sua senha"
+                  {...register("password", { required: "Senha é obrigatória" })}
+                />
+                {errors.password && (
+                  <Text color="red.400" fontSize="sm" mt={1}>
+                    {errors.password.message}
+                  </Text>
+                )}
+              </Box>
 
-            <Box>
-              <CustomLabel>Password</CustomLabel>
-              <CustomInput type="password" placeholder="Digite sua senha" />
-            </Box>
-
-            <Box>
-              <CustomLabel>Role</CustomLabel>
-              <Select
-                color="#72778a"
-                border="none"
-                bg="#121214"
-                _focus={{ borderColor: "#00875f", boxShadow: "0 0 0 1px #00875f" }}
-                defaultValue={"user"}
+              <Button
+                type="submit"
+                isLoading={loading}
+                bg="#00875F"
+                color="#fff"
+                mt={4}
+                _hover={{ bg: "#015f43" }}
               >
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </Select>
-            </Box>
+                Entrar
+              </Button>
 
-            <Button bg="#00875F" color="#fff" mt={4} _hover={{ bg: "#015f43" }}>
-              Entrar
-            </Button>
-
-            {/* A tag de <Link> do react-router-dom substitui a tag <a> que normalmente é utilizada para redirecionamento de página. */}
-            <Link to="/registro">
-              <Text color="teal.400" mt={4} textAlign="center" fontSize="sm" _hover={{ textDecoration: "underline" }}>
-                Não tem uma conta? Crie uma agora.
-              </Text>
-            </Link>
-          </VStack>
+              <Link to="/registro">
+                <Text
+                  color="teal.400"
+                  mt={4}
+                  textAlign="center"
+                  fontSize="sm"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Não tem uma conta? Crie uma agora.
+                </Text>
+              </Link>
+            </VStack>
+          </form>
         </Box>
       </Container>
     </Flex>
