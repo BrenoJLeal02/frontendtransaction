@@ -12,3 +12,10 @@ export interface EditUserProps {
   userData: UserData;
   onUpdate: (userId: string, data: UserData) => void
 }
+
+export interface ChangePasswordProps {
+  isOpen: boolean;
+  onClose: () => void;
+  userData: UserData;
+  onUpdate: (userId: string, data: UserData, newPassword: string) => void
+}

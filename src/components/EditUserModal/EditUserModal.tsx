@@ -43,7 +43,7 @@ export function EditUserModal({ isOpen, onClose, userData, onUpdate }: EditUserP
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="#202024" color="white" p="1.5rem">
-        <ModalHeader pt="2rem">Editar perfil</ModalHeader>
+        <ModalHeader pt="1.5rem">Editar perfil</ModalHeader>
         <ModalCloseButton />
         <ModalBody as="form" onSubmit={handleSubmit}>
           <VStack spacing="1.5rem">
