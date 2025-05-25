@@ -9,7 +9,7 @@ export function ChangePasswordModal({ isOpen, onClose, userData, onUpdate }: Cha
     newPassword: '',
     confirmPassword: '',
   });
-  
+
   useEffect(() => {
     if (isOpen) {
       setForm({
@@ -71,7 +71,7 @@ export function ChangePasswordModal({ isOpen, onClose, userData, onUpdate }: Cha
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="#202024" color="white" p="1.5rem">
-        <ModalHeader pt="1.5rem">Editar perfil</ModalHeader>
+        <ModalHeader pt="1.5rem">Alterar senha</ModalHeader>
         <ModalCloseButton />
         <ModalBody as="form" onSubmit={handleSubmit}>
           <VStack spacing="1.5rem">
