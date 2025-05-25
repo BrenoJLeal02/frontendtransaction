@@ -21,6 +21,7 @@ import {
   NewTransactionModalProps,
 } from "../../types/TransactionInterface";
 import { CustomInput } from "../CustomInput/CustomInput";
+import { priceFormatter } from "../../utils/priceFormatter";
 
 interface ExtendedNewTransactionModalProps extends NewTransactionModalProps {
   onTransactionCreated: () => void;
@@ -174,7 +175,7 @@ export function NewTransactionModal({
           </ModalBody>
         </ModalContent>
       </Modal>
-      
+
       <Modal isOpen={showConfirmation} onClose={handleCancelConfirmation} isCentered>
         <ModalOverlay />
         <ModalContent bg="#202024" color="white" p={6}>
@@ -187,7 +188,7 @@ export function NewTransactionModal({
               {transactionToCreate && (
                 <VStack spacing={2} align="start" width="100%">
                   <Text><strong>Tipo:</strong> {transactionToCreate.type === 'income' ? 'Entrada' : 'Saída'}</Text>
-                  <Text><strong>Quantidade:</strong> R$ {transactionToCreate.amount.toFixed(2)}</Text>
+                  <Text><strong>Quantidade:</strong> {priceFormatter.format(transactionToCreate.amount)}</Text>
                   <Text><strong>Categoria:</strong> {transactionToCreate.category}</Text>
                 </VStack>
               )}
