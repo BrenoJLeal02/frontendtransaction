@@ -49,6 +49,6 @@ export function useAuthUser() {
     email: decoded?.email ?? null,
     username: decoded?.username ?? null,
     isAuthenticated: !!decoded,
-    logout,
+    logout
   };
 }
