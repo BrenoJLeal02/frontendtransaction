@@ -60,7 +60,7 @@ export function ProfilePage() {
     <Box>
       <Header onTransactionCreated={() => {}} />
       <ProfileData
-        data={user}
+        data={user!}
         loading={loading}
         onEditClick={() => setIsEditModalOpen(true)}
         onChangePasswordClick={() => setIsChangePasswordModalOpen(true)}
