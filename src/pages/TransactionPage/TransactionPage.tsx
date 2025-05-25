@@ -43,7 +43,7 @@ export function TransactionPage() {
       
       <Summary transactions={transactions} />
     
-      <TransactionTable transactions={transactions} loading={loading} />
+      <TransactionTable transactions={transactions} loading={loading} onTransactionDeleted={loadTransactions}/>
     </Box>
   );
 }

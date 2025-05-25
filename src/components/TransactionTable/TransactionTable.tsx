@@ -1,23 +1,30 @@
 import {
   Box,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  Spinner,
   Center,
-  Text,
   Flex,
+  IconButton,
   Input,
+  Spinner,
+  Table,
   TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Tr,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { FiTrash } from "react-icons/fi";
+import { deleteTransaction } from "../../service/Transaction";
 import { findTransactionProps } from "../../types/TransactionInterface";
 import { priceFormatter } from "../../utils/priceFormatter";
+import { ConfirmationModal } from "../ConfirmationModal/ConfirmationModal";
+import { useState } from "react";
 
 interface TransactionTableProps {
   transactions: findTransactionProps[];
   loading: boolean;
+  onTransactionDeleted: () => void;
 }
 
 // O componente TransactionTable exibe uma tabela de transações financeiras, permitindo filtrar por categoria
@@ -27,8 +34,53 @@ interface TransactionTableProps {
 
 
 
-export function TransactionTable({ transactions, loading }: TransactionTableProps) {
+export function TransactionTable({ transactions, loading, onTransactionDeleted }: TransactionTableProps) {
+  const toast = useToast();
   const [search, setSearch] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedTransaction, setSelectedTransaction] = useState<findTransactionProps[]>([]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  function handleDeleteTransaction(tx: findTransactionProps) {
+    {
+      setSelectedTransaction([tx]);
+      onOpen();
+    }
+  }
+
+  async function handleConfirmDelete() {
+    if (!selectedTransaction) return;
+    setIsDeleting(true);
+
+    try {
+      await deleteTransaction(selectedTransaction[0].id);
+
+      if (onTransactionDeleted) {
+        onTransactionDeleted();
+      }
+
+      toast({
+        title: "Transação deletada!",
+        description: "Sua transação foi deletada com sucesso.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      console.error("Erro ao deletar transação:", error);
+      
+      toast({
+        title: "Erro ao deletar transação",
+        description: error.message || "Tente novamente mais tarde.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setIsDeleting(false);
+      onClose();
+    }
+  }
 
   const filteredTransactions = transactions.filter((tx) =>
     tx.category.toLowerCase().includes(search.toLowerCase())
@@ -109,6 +161,14 @@ export function TransactionTable({ transactions, loading }: TransactionTableProp
                     textAlign="center"
                   >
                     {new Date(tx.createdAt).toLocaleDateString()}
+                    <IconButton
+                      aria-label="Delete transaction"
+                      icon={<FiTrash />}
+                      variant="ghost"
+                      marginStart="1.25rem"
+                      colorScheme="red"
+                      onClick={() => handleDeleteTransaction(tx)}
+                    />
                   </Td>
                 </Tr>
               ))}
@@ -116,6 +176,14 @@ export function TransactionTable({ transactions, loading }: TransactionTableProp
           </Table>
         </TableContainer>
       )}
+      <ConfirmationModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleting}
+        title="Deletar transação"
+        description="Você tem certeza que deseja deletar esta transação?"
+      />
     </Box>
   );
 }
