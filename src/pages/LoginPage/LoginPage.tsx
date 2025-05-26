@@ -28,8 +28,6 @@ const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
 
     const response = await login(data);
 
-    // Adiciona um delay de 5 segundos (5000 ms) antes de prosseguir
-    setTimeout(() => {
       localStorage.setItem("jwtToken", response.token);
 
       toast({
@@ -41,7 +39,6 @@ const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
       });
 
       navigate("/transacao");
-    }, 5000);
 
   } catch (error: any) {
     toast({
