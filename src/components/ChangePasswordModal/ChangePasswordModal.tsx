@@ -1,52 +1,53 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import { CustomInput } from "../CustomInput/CustomInput";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ChangePasswordProps } from "../../types/UserInterface";
+import { useForm } from "react-hook-form";
+
+type PasswordFormData = {
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export function ChangePasswordModal({ isOpen, onClose, userData, onUpdate }: ChangePasswordProps) {
   const toast = useToast();
-  const [form, setForm] = useState({
-    newPassword: '',
-    confirmPassword: '',
-  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<PasswordFormData>();
 
   useEffect(() => {
     if (isOpen) {
-      setForm({
-        newPassword: '',
-        confirmPassword: '',
+      reset();
+    }
+  }, [isOpen, reset]);
+
+  const onSubmit = async (data: PasswordFormData) => {
+    if (data.newPassword !== data.confirmPassword) {
+      setError("confirmPassword", {
+        type: "manual",
+        message: "As senhas não correspondem",
       });
-    }
-  }, [isOpen]);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (form.newPassword !== form.confirmPassword) {
-      toast({
-        title: "Erro",
-        description: "As senhas inseridas não correspondem.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      })
       return;
     }
-    if (form.newPassword.trim() === "" || form.confirmPassword.trim() === "") {
-      toast({
-        title: "Erro",
-        description: "A senha não pode ficar em branco.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      })
-      return;
-    }
+
     try {
-      await onUpdate(userData.id, userData, form.newPassword);
+      await onUpdate(userData.id, userData, data.newPassword);
       onClose();
       toast({
         title: "Senha atualizada!",
@@ -66,29 +67,43 @@ export function ChangePasswordModal({ isOpen, onClose, userData, onUpdate }: Cha
       });
     }
   };
-  
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="#202024" color="white" p="1.5rem">
         <ModalHeader pt="1.5rem">Alterar senha</ModalHeader>
         <ModalCloseButton />
-        <ModalBody as="form" onSubmit={handleSubmit}>
+        <ModalBody as="form" onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing="1.5rem">
             <CustomInput
-              name="newPassword"
               placeholder="Nova senha"
-              border="none"
-              onChange={handleChange}
               type="password"
+              border="none"
+              {...register("newPassword", {
+                required: "A nova senha é obrigatória",
+              })}
             />
+            {errors.newPassword && (
+              <Text color="red.400" fontSize="sm" alignSelf="flex-start">
+                {errors.newPassword.message}
+              </Text>
+            )}
+
             <CustomInput
-              name="confirmPassword"
               placeholder="Confirmar nova senha"
-              border="none"
-              onChange={handleChange}
               type="password"
+              border="none"
+              {...register("confirmPassword", {
+                required: "Confirme a nova senha",
+              })}
             />
+            {errors.confirmPassword && (
+              <Text color="red.400" fontSize="sm" alignSelf="flex-start">
+                {errors.confirmPassword.message}
+              </Text>
+            )}
+
             <Button type="submit" colorScheme="green" width="100%">
               Salvar
             </Button>
@@ -97,4 +112,4 @@ export function ChangePasswordModal({ isOpen, onClose, userData, onUpdate }: Cha
       </ModalContent>
     </Modal>
   );
-};
+}
