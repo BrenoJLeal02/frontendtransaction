@@ -1,18 +1,19 @@
-import { Box } from "@chakra-ui/react";
-import { Header } from "../../components/Header/Header";
-import { ProfileData } from "../../components/ProfileData/ProfileData";
-import { useEffect, useState } from "react";
-import { useAuthUser } from "../../hooks/useAuthUser";
-import { UserData } from "../../types/UserInterface";
-import { fetchUser, editUser } from "../../service/User";
-import { EditUserModal } from "../../components/EditUserModal/EditUserModal";
-import { ChangePasswordModal } from "../../components/ChangePasswordModal/ChangePasswordModal";
+import { Box, Center, Spinner } from '@chakra-ui/react';
+import { Header } from '../../components/Header/Header';
+import { ProfileData } from '../../components/ProfileData/ProfileData';
+import { useEffect, useState } from 'react';
+import { useAuthUser } from '../../hooks/useAuthUser';
+import { UserData } from '../../types/UserInterface';
+import { fetchUser, editUser } from '../../service/User';
+import { EditUserModal } from '../../components/EditUserModal/EditUserModal';
+import { ChangePasswordModal } from '../../components/ChangePasswordModal/ChangePasswordModal';
 
 export function ProfilePage() {
   const [user, setUser] = useState<UserData>();
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState(false);
   const { userId } = useAuthUser();
 
   const loadProfile = async (userId: string) => {
@@ -32,40 +33,49 @@ export function ProfilePage() {
   }, [userId]);
 
   const updateUser = async (userId: string, data: UserData) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await editUser(userId, data);
-      setUser(response)
+      setUser(response);
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
-  const changeUserPassword = async (userId: string, data: UserData, newPassword: string) => {
-    setLoading(true)
+  const changeUserPassword = async (
+    userId: string,
+    data: UserData,
+    newPassword: string
+  ) => {
+    setLoading(true);
     try {
-      const updateUser = {...data, password: newPassword}
+      const updateUser = { ...data, password: newPassword };
       const response = await editUser(userId, updateUser);
-      setUser(response)
+      setUser(response);
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Box>
       <Header onTransactionCreated={() => {}} />
-      <ProfileData
-        data={user!}
-        loading={loading}
-        onEditClick={() => setIsEditModalOpen(true)}
-        onChangePasswordClick={() => setIsChangePasswordModalOpen(true)}
-      />
-
+      {user ? (
+        <ProfileData
+          data={user}
+          loading={loading}
+          onEditClick={() => setIsEditModalOpen(true)}
+          onChangePasswordClick={() => setIsChangePasswordModalOpen(true)}
+        />
+      ) : (
+        <Center>
+          <Spinner size="lg" />
+        </Center>
+      )}
       {user && (
         <>
           <EditUserModal
