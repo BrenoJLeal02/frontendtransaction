@@ -23,7 +23,6 @@ export function RegisterPage() {
     handleSubmit,
     formState: { errors, isSubmitted },
   } = useForm<RegisterFormData>();
-
   const toast = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -32,6 +31,7 @@ export function RegisterPage() {
     try {
       setLoading(true);
       const response = await register(data);
+       setTimeout(() => {
       toast({
         title: "Cadastro realizado",
         description: `Bem-vindo, ${response.data.username}`,
@@ -40,6 +40,7 @@ export function RegisterPage() {
         isClosable: true,
       });
       navigate("/"); 
+    },5000)
     } catch (error: any) {
       toast({
         title: "Erro ao cadastrar",
@@ -96,7 +97,7 @@ export function RegisterPage() {
               </Box>
 
               <Box>
-                <CustomLabel>Username</CustomLabel>
+                <CustomLabel>Nome de Usuário</CustomLabel>
                 <CustomInput
                   type="text"
                   placeholder="Digite seu username"
@@ -112,7 +113,7 @@ export function RegisterPage() {
               </Box>
 
               <Box>
-                <CustomLabel>Password</CustomLabel>
+                <CustomLabel>Senha</CustomLabel>
                 <CustomInput
                   type="password"
                   placeholder="Digite sua senha"

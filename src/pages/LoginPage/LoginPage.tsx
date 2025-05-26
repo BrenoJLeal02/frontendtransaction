@@ -8,7 +8,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomLabel from "../../components/CustomLabel/CustomLabel";
 import { CustomInput } from "../../components/CustomInput/CustomInput";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,22 +20,28 @@ export function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
   try {
     setLoading(true);
-    const response = await login(data); 
-    localStorage.setItem("jwtToken", response.token);  
-    
-    toast({
-      title: "Login realizado com sucesso",
-      description: `Bem-vindo de volta, ${response.username}`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
 
-    window.location.href = "/transacao";  
+    const response = await login(data);
+
+    // Adiciona um delay de 5 segundos (5000 ms) antes de prosseguir
+    setTimeout(() => {
+      localStorage.setItem("jwtToken", response.token);
+
+      toast({
+        title: "Login realizado com sucesso",
+        description: `Bem-vindo de volta, ${response.username}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate("/transacao");
+    }, 5000);
 
   } catch (error: any) {
     toast({
@@ -45,8 +51,7 @@ export function LoginPage() {
       duration: 3000,
       isClosable: true,
     });
-  } finally {
-    setLoading(false);
+    setLoading(false); // Precisa parar o loading em caso de erro
   }
 };
 
@@ -77,7 +82,7 @@ export function LoginPage() {
               </Box>
 
               <Box>
-                <CustomLabel>Password</CustomLabel>
+                <CustomLabel>Senha</CustomLabel>
                 <CustomInput
                   type="password"
                   placeholder="Digite sua senha"
