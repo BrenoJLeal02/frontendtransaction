@@ -31,7 +31,6 @@ export function RegisterPage() {
     try {
       setLoading(true);
       const response = await register(data);
-       setTimeout(() => {
       toast({
         title: "Cadastro realizado",
         description: `Bem-vindo, ${response.data.username}`,
@@ -40,7 +39,6 @@ export function RegisterPage() {
         isClosable: true,
       });
       navigate("/"); 
-    },5000)
     } catch (error: any) {
       toast({
         title: "Erro ao cadastrar",
