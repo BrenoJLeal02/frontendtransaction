@@ -1,4 +1,4 @@
-import { Box, Center, Spinner } from '@chakra-ui/react';
+import { Box, Center, Spinner, Text } from '@chakra-ui/react';
 import { Header } from '../../components/Header/Header';
 import { ProfileData } from '../../components/ProfileData/ProfileData';
 import { useEffect, useState } from 'react';
@@ -12,8 +12,7 @@ export function ProfilePage() {
   const [user, setUser] = useState<UserData>();
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
-    useState(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
   const { userId } = useAuthUser();
 
   const loadProfile = async (userId: string) => {
@@ -23,6 +22,7 @@ export function ProfilePage() {
       setUser(response);
     } catch (error) {
       console.error(error);
+      setUser(undefined); 
     } finally {
       setLoading(false);
     }
@@ -64,20 +64,18 @@ export function ProfilePage() {
   return (
     <Box>
       <Header onTransactionCreated={() => {}} />
-      {user ? (
-        <ProfileData
-          data={user}
-          loading={loading}
-          onEditClick={() => setIsEditModalOpen(true)}
-          onChangePasswordClick={() => setIsChangePasswordModalOpen(true)}
-        />
-      ) : (
+      {loading ? (
         <Center>
           <Spinner size="lg" />
         </Center>
-      )}
-      {user && (
+      ) : user ? (
         <>
+          <ProfileData
+            data={user}
+            loading={loading}
+            onEditClick={() => setIsEditModalOpen(true)}
+            onChangePasswordClick={() => setIsChangePasswordModalOpen(true)}
+          />
           <EditUserModal
             isOpen={isEditModalOpen}
             onClose={() => setIsEditModalOpen(false)}
@@ -91,6 +89,12 @@ export function ProfilePage() {
             onUpdate={changeUserPassword}
           />
         </>
+      ) : (
+        <Center py={10}>
+          <Text fontSize="lg" color="gray.500">
+            Informações indisponíveis
+          </Text>
+        </Center>
       )}
     </Box>
   );
